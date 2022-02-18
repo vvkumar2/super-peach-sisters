@@ -86,7 +86,8 @@ int StudentWorld::move()
     
     int val = -1;
     getKey(val);
-    peach->doSomething(val);
+    peach->setKey(val);
+    peach->doSomething();
     return GWSTATUS_CONTINUE_GAME;
 }
 

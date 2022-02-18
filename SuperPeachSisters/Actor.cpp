@@ -20,12 +20,12 @@ Peach::Peach (int x, int y)
 Peach::~Peach() {};
 void Peach::doSomething()
 {
-    if (value == KEY_PRESS_LEFT)
+    if (key == KEY_PRESS_LEFT)
     {
         setDirection(180);
         moveTo(getX()-4, getY());
     }
-    if (value == KEY_PRESS_RIGHT)
+    if (key == KEY_PRESS_RIGHT)
     {
         setDirection(0);
         moveTo(getX()+4, getY());
@@ -33,9 +33,9 @@ void Peach::doSomething()
     return;
 }
 
-int Peach::getInput(int val)
+void Peach::setKey (int val)
 {
-    
+    key = val;
 }
 
 

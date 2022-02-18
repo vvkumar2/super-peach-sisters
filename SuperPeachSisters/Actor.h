@@ -34,7 +34,7 @@ public:
           int y);
     ~Peach();
     void doSomething ();
-    int getInput (int val);
+    void setKey(int val);
     
 private:
     int healthPoints;
@@ -43,6 +43,7 @@ private:
     bool starPower;
     int time_to_recharge_before_next_fire;
     int remaining_jump_distance;
+    int key = -1;
 };
 
 

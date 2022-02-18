@@ -18,7 +18,7 @@ public:
 
 private:
     vector <Actor*> actors;
-    Actor* peach;
+    Peach* peach;
 };
 
 #endif // STUDENTWORLD_H_
