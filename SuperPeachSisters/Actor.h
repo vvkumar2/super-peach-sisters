@@ -34,6 +34,7 @@ public:
           int y);
     ~Peach();
     void doSomething ();
+    int getInput (int val);
     
 private:
     int healthPoints;
@@ -48,12 +49,12 @@ private:
 class Block: public Actor {
 public:
     Block(int x,
-          int y);
+          int y, char ch);
     ~Block();
     void doSomething ();
     
 private:
-    char power;
+    char power = ' ';
     bool released;
 };
 
@@ -122,4 +123,69 @@ public:
 private:
 };
 
+
+class PiranhaFireball: public Actor {
+public:
+    PiranhaFireball(int x,
+          int y, int d);
+    ~PiranhaFireball();
+    void doSomething ();
+    
+private:
+};
+
+
+class PeachFireball: public Actor {
+public:
+    PeachFireball(int x,
+          int y, int d);
+    ~PeachFireball();
+    void doSomething ();
+    
+private:
+};
+
+
+class Shell: public Actor {
+public:
+    Shell(int x,
+          int y, int d);
+    ~Shell();
+    void doSomething ();
+    
+private:
+};
+
+
+class Goomba: public Actor {
+public:
+    Goomba(int x,
+          int y);
+    ~Goomba();
+    void doSomething ();
+    
+private:
+};
+
+
+class Koopa: public Actor {
+public:
+    Koopa(int x,
+          int y);
+    ~Koopa();
+    void doSomething ();
+    
+private:
+};
+
+class Piranha: public Actor {
+public:
+    Piranha(int x,
+          int y);
+    ~Piranha();
+    void doSomething ();
+    
+private:
+};
 #endif // ACTOR_H_
+

@@ -20,12 +20,27 @@ Peach::Peach (int x, int y)
 Peach::~Peach() {};
 void Peach::doSomething()
 {
+    if (value == KEY_PRESS_LEFT)
+    {
+        setDirection(180);
+        moveTo(getX()-4, getY());
+    }
+    if (value == KEY_PRESS_RIGHT)
+    {
+        setDirection(0);
+        moveTo(getX()+4, getY());
+    }
     return;
 }
 
+int Peach::getInput(int val)
+{
+    
+}
 
-Block::Block (int x, int y)
-:Actor(IID_BLOCK, x, y, 0, 2, false, true), released (false), power(' ') {}
+
+Block::Block (int x, int y, char ch)
+:Actor(IID_BLOCK, x, y, 0, 2, false, true), released (false), power(ch) {}
 Block::~Block() {};
 void Block::doSomething ()
 {
@@ -83,3 +98,76 @@ void Star::doSomething ()
     return;
 }
 
+PiranhaFireball::PiranhaFireball (int x, int y, int d)
+:Actor(IID_PIRANHA_FIRE, x, y, d, 1, false) {}
+PiranhaFireball::~PiranhaFireball() {};
+void PiranhaFireball::doSomething ()
+{
+    return;
+}
+
+PeachFireball::PeachFireball (int x, int y, int d)
+:Actor(IID_PEACH_FIRE, x, y, d, 1, false) {}
+PeachFireball::~PeachFireball() {};
+void PeachFireball::doSomething ()
+{
+    return;
+}
+
+Shell::Shell (int x, int y, int d)
+:Actor(IID_SHELL, x, y, d, 1, false) {}
+Shell::~Shell() {};
+void Shell::doSomething ()
+{
+    return;
+}
+
+
+Goomba::Goomba (int x, int y)
+:Actor(IID_GOOMBA, x, y)
+{
+    //MAKE SET DIR FUNCTION
+//    if (rand() %2 ==1)
+//        d = 180;
+//    }
+//    else
+//        d = 0;
+}
+Goomba::~Goomba() {};
+void Goomba::doSomething ()
+{
+    return;
+}
+
+Koopa::Koopa (int x, int y)
+:Actor(IID_GOOMBA, x, y)
+{
+    //MAKE SET DIR FUNCTION
+//    if (rand() %2 ==1)
+//        d = 180;
+//    }
+//    else
+//        d = 0;
+}
+Koopa::~Koopa() {};
+void Koopa::doSomething ()
+{
+    return;
+}
+
+
+Piranha::Piranha (int x, int y)
+:Actor(IID_GOOMBA, x, y)
+{
+    //MAKE SET DIR FUNCTION
+//    if (rand() %2 ==1)
+//        d = 180;
+//    }
+//    else
+//        d = 0;
+}
+Piranha::~Piranha() {};
+void Piranha::doSomething ()
+{
+    return;
+}
