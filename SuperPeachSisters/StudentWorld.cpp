@@ -79,18 +79,57 @@ int StudentWorld::init()
 
 int StudentWorld::move()
 {
-    // This code is here merely to allow the game to build, run, and terminate after you hit enter.
-    // Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.
-//    decLives();
-//    return GWSTATUS_PLAYER_DIED;
-    
-    int val = -1;
+    int val;
     getKey(val);
-    peach->setKey(val);
-    peach->doSomething();
+    
+    int x = peach->getX();
+    int y = peach->getY();
+    
+    if (val == KEY_PRESS_LEFT)
+    {
+        x = peach->getX() - 4;
+    }
+    else if (val == KEY_PRESS_RIGHT)
+    {
+        x = peach->getX() + 4;
+    }
+    
+    bool move = checkIfCanMove(x, y);
+    
+    if (move)
+    {
+        peach->setKey(val);
+        peach->doSomething();
+    }
+    
     return GWSTATUS_CONTINUE_GAME;
 }
 
 void StudentWorld::cleanUp()
 {
+    while (actors.empty())
+    {
+        actors.erase(actors.begin());
+    }
+    delete peach;
 }
+
+bool StudentWorld::checkIfCanMove(int x, int y)
+{
+    for (vector<Actor*>::iterator i = actors.begin(); i != actors.end(); i++)
+    {
+        Actor* a = *i;
+        int xx = a->getX();
+        int yy = a->getY();
+        
+        if (a->isBlocking())
+        {
+            if ((abs(xx-x) < SPRITE_WIDTH) && (abs(yy-y) < SPRITE_HEIGHT))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+

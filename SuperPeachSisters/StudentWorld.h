@@ -15,6 +15,7 @@ public:
   virtual int init();
   virtual int move();
   virtual void cleanUp();
+    bool checkIfCanMove(int x, int y);
 
 private:
     vector <Actor*> actors;

@@ -16,14 +16,16 @@ public:
           int dir,
           int depth,
           bool d,
-          bool blocking,
+          bool b,
           int size);
     bool isAlive() { return alive; }
+    bool isBlocking() { return blocking; }
     virtual void doSomething () { return; }
     ~Actor();
 private:
     bool alive;
     bool damageable;
+    bool blocking;
 };
 
 

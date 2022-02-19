@@ -4,8 +4,8 @@
 
 // Students:  Add code to this file, Actor.h, StudentWorld.h, and StudentWorld.cpp
 
-Actor::Actor (int imageID, int x, int y, int dir=0, int depth=0, bool d = true, bool blocking = false, int size=1)
-:GraphObject(imageID, x, y, dir, depth, size), damageable (d), alive(true) {}
+Actor::Actor (int imageID, int x, int y, int dir=0, int depth=0, bool d = true, bool b = false, int size=1)
+:GraphObject(imageID, x, y, dir, depth, size), damageable (d), alive(true), blocking (b) {}
 Actor::~Actor() {};
 
 
@@ -20,6 +20,10 @@ Peach::Peach (int x, int y)
 Peach::~Peach() {};
 void Peach::doSomething()
 {
+    if (!this->isAlive())
+    {
+        return;
+    }
     if (key == KEY_PRESS_LEFT)
     {
         setDirection(180);
@@ -140,7 +144,7 @@ void Goomba::doSomething ()
 }
 
 Koopa::Koopa (int x, int y)
-:Actor(IID_GOOMBA, x, y)
+:Actor(IID_KOOPA, x, y)
 {
     //MAKE SET DIR FUNCTION
 //    if (rand() %2 ==1)
