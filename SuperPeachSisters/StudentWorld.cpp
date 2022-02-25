@@ -49,27 +49,33 @@ int StudentWorld::init()
                 case Level::empty:
                     break;
                 case Level::koopa:
-                    actors.push_back(new Koopa(width, height)); break;
+                    int a;
+                    if (rand() %2 ==1) a = 180; else a = 0;
+                    actors.push_back(new Koopa(this, width, height, a)); break;
                 case Level::goomba:
-                    actors.push_back(new Goomba(width, height)); break;
+                    int b;
+                    if (rand() %2 ==1) b = 180; else b = 0;
+                    actors.push_back(new Goomba(this, width, height, b)); break;
                 case Level::peach:
-                    peach = new Peach(width, height);
+                    peach = new Peach(this, width, height);
                 case Level::flag:
-                    actors.push_back(new Flag(width, height)); break;
-                case Level::block:
-                    actors.push_back(new Block(width, height, ' ')); break;
+                    actors.push_back(new Flag(this, width, height)); break;
                 case Level::star_goodie_block:
-                    actors.push_back(new Block(width, height, '*')); break;
+                    actors.push_back(new Block(this, width, height, '*')); break;
                 case Level::flower_goodie_block:
-                    actors.push_back(new Block(width, height, '^')); break;
+                    actors.push_back(new Block(this, width, height, '%')); break;
                 case Level::mushroom_goodie_block:
-                    actors.push_back(new Block(width, height, '+')); break;
+                    actors.push_back(new Block(this, width, height, '^')); break;
+                case Level::block:
+                    actors.push_back(new Block(this, width, height, 'q')); break;
                 case Level::piranha:
-                    actors.push_back(new Piranha(width, height)); break;
+                    int c;
+                    if (rand() %2 ==1) c = 180; else c = 0;
+                    actors.push_back(new Piranha(this, width, height, c)); break;
                 case Level::pipe:
-                    actors.push_back(new Pipe(width, height)); break;
+                    actors.push_back(new Pipe(this, width, height)); break;
                 case Level::mario:
-                    actors.push_back(new Mario(width, height)); break;
+                    actors.push_back(new Mario(this, width, height)); break;
             }
         }
     }
@@ -79,27 +85,41 @@ int StudentWorld::init()
 
 int StudentWorld::move()
 {
-    int val;
-    getKey(val);
-    
-    int x = peach->getX();
-    int y = peach->getY();
-    
-    if (val == KEY_PRESS_LEFT)
+    peach->doSomething();
+    for (vector<Actor*>::iterator i = actors.begin(); i != actors.end(); i++)
     {
-        x = peach->getX() - 4;
-    }
-    else if (val == KEY_PRESS_RIGHT)
-    {
-        x = peach->getX() + 4;
+        Actor* a = *i;
+        if (a != nullptr)
+            a->doSomething();
     }
     
-    bool move = checkIfCanMove(x, y);
-    
-    if (move)
+    if (!peach->isAlive())
     {
-        peach->setKey(val);
-        peach->doSomething();
+        playSound(SOUND_PLAYER_DIE);
+        return GWSTATUS_PLAYER_DIED;
+    }
+    if (won)
+    {
+        return GWSTATUS_PLAYER_WON;
+    }
+    if (finished)
+    {
+        return GWSTATUS_FINISHED_LEVEL;
+    }
+    
+    for (vector<Actor*>::iterator i = actors.begin(); i != actors.end(); i++)
+    {
+        Actor* a = *i;
+        if (!a->isAlive())
+        {
+            actors.erase(i);
+            i--;
+            delete a;
+        }
+    }
+    if (!peach->isAlive())
+    {
+        delete peach;
     }
     
     return GWSTATUS_CONTINUE_GAME;
@@ -107,8 +127,9 @@ int StudentWorld::move()
 
 void StudentWorld::cleanUp()
 {
-    while (actors.empty())
+    while (!actors.empty())
     {
+        (*actors.begin())->setVisible(false);
         actors.erase(actors.begin());
     }
     delete peach;
@@ -129,7 +150,38 @@ bool StudentWorld::checkIfCanMove(int x, int y)
                 return false;
             }
         }
+        
     }
     return true;
+}
+
+bool StudentWorld::isOverlapping(int x, int y)
+{
+    int peachX = peach->getX();
+    int peachY = peach->getY();
+        
+    if ((abs(peachX-x) < SPRITE_WIDTH) && (abs(peachY-y) < SPRITE_HEIGHT))
+        return true;
+    
+    return false;
+}
+    
+Actor* StudentWorld::objAtPosition(int x, int y)
+{
+    for (vector<Actor*>::iterator i = actors.begin(); i != actors.end(); i++)
+    {
+        Actor* a = *i;
+        int xx = a->getX();
+        int yy = a->getY();
+        
+        if (a->isBlocking())
+        {
+            if ((abs(xx-x) < SPRITE_WIDTH) && (abs(yy-y) < SPRITE_HEIGHT))
+            {
+                return a;
+            }
+        }
+    }
+    return nullptr;
 }
 

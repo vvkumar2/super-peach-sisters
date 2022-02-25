@@ -8,9 +8,12 @@
 
 //GraphObject(int imageID, int startX, int startY, int dir = 0, int depth = 0, double size = 1.0)
 
+class StudentWorld;
+
 class Actor: public GraphObject {
 public:
-    Actor(int imageID,
+    Actor(StudentWorld* w,
+          int imageID,
           int x,
           int y,
           int dir,
@@ -18,32 +21,52 @@ public:
           bool d,
           bool b,
           int size);
+    
+    virtual void doSomething () { return; }
+    virtual void bonk () { return; };
+    virtual void damage () {}
+    
+    void setAlive(bool a) { alive = a; }
     bool isAlive() { return alive; }
     bool isBlocking() { return blocking; }
-    virtual void doSomething () { return; }
+    int getDir() { return direction; }
+    void setDir(int a) { direction = a; }
+    bool getDamageable() { return damageable; }
+    StudentWorld* GetWorld() { return m_w; }
+    
     ~Actor();
 private:
     bool alive;
     bool damageable;
     bool blocking;
+    int direction;
+    StudentWorld* m_w;
 };
 
 
 
 class Peach: public Actor {
 public:
-    Peach(int x,
+    Peach(StudentWorld* w,
+          int x,
           int y);
     ~Peach();
     void doSomething ();
+    void bonk ();
     void setKey(int val);
+    void giveFirePower () { firePower = true; }
+    void giveStarPower () { starPower = true; }
+    void giveJumpPower () { jumpPower = true; }
+    void setHP (int x) { healthPoints = x; }
     
 private:
     int healthPoints;
     bool jumpPower;
     bool firePower;
     bool starPower;
-    int time_to_recharge_before_next_fire;
+    int rechargeTime;
+    int starTicks;
+    int invincibilityTicks;
     int remaining_jump_distance;
     int key = -1;
 };
@@ -51,144 +74,168 @@ private:
 
 class Block: public Actor {
 public:
-    Block(int x,
-          int y, char ch);
+    Block(StudentWorld* w,
+          int x,
+          int y,
+          char ch);
     ~Block();
-    void doSomething ();
-    
+    void bonk ();
 private:
-    char power = ' ';
+    char power = 'q';
     bool released;
 };
 
 
 class Pipe: public Actor {
 public:
-    Pipe(int x,
+    Pipe(StudentWorld* w,
+         int x,
           int y);
     ~Pipe();
     void doSomething ();
-    
 private:
 };
 
 
 class Flag: public Actor {
 public:
-    Flag(int x,
+    Flag(StudentWorld* w,
+         int x,
           int y);
     ~Flag();
     void doSomething ();
-    
 private:
 };
 
 
 class Mario: public Actor {
 public:
-    Mario(int x,
+    Mario(StudentWorld* w,
+          int x,
           int y);
     ~Mario();
     void doSomething ();
-    
+    void bonk () {};
 private:
 };
 
 class Flower: public Actor {
 public:
-    Flower(int x,
+    Flower(StudentWorld* w,
+           int x,
           int y);
     ~Flower();
     void doSomething ();
-    
+    void bonk () {};
 private:
 };
 
 
 class Mushroom: public Actor {
 public:
-    Mushroom(int x,
+    Mushroom(StudentWorld* w,
+             int x,
           int y);
     ~Mushroom();
     void doSomething ();
-    
+    void bonk () {};
 private:
 };
 
 
 class Star: public Actor {
 public:
-    Star(int x,
+    Star(StudentWorld* w,
+         int x,
           int y);
     ~Star();
     void doSomething ();
-    
+    void bonk () {};
 private:
 };
 
 
 class PiranhaFireball: public Actor {
 public:
-    PiranhaFireball(int x,
+    PiranhaFireball(StudentWorld* w,
+                    int x,
           int y, int d);
     ~PiranhaFireball();
     void doSomething ();
-    
+    void bonk () {};
 private:
 };
 
 
 class PeachFireball: public Actor {
 public:
-    PeachFireball(int x,
+    PeachFireball(StudentWorld* w,
+                  int x,
           int y, int d);
     ~PeachFireball();
     void doSomething ();
-    
+    void bonk () {};
 private:
 };
 
 
 class Shell: public Actor {
 public:
-    Shell(int x,
+    Shell(StudentWorld* w,
+          int x,
           int y, int d);
     ~Shell();
     void doSomething ();
-    
+    void bonk () {};
 private:
 };
 
-
-class Goomba: public Actor {
+class Enemy: public Actor {
 public:
-    Goomba(int x,
-          int y);
+    Enemy(StudentWorld* w,
+           int imageID,
+           int x,
+           int y,
+           int dir);
+    ~Enemy();
+    virtual void doSomething ();
+    virtual void bonk ();
+    virtual void damage ();
+private:
+};
+
+class Goomba: public Enemy {
+public:
+    Goomba(StudentWorld* w,
+           int x,
+           int y,
+           int dir);
     ~Goomba();
-    void doSomething ();
-    
 private:
 };
 
 
-class Koopa: public Actor {
+class Koopa: public Enemy {
 public:
-    Koopa(int x,
-          int y);
+    Koopa(StudentWorld* w,
+          int x,
+          int y,
+          int dir);
     ~Koopa();
-    void doSomething ();
-    
 private:
 };
 
 class Piranha: public Actor {
 public:
-    Piranha(int x,
-          int y);
+    Piranha(StudentWorld* w,
+            int x,
+            int y,
+            int dir);
     ~Piranha();
     void doSomething ();
-    
+    void bonk () {};
 private:
+    int fr;
 };
 #endif // ACTOR_H_
 
